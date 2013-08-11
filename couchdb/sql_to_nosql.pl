@@ -2,10 +2,11 @@
 
 # sql_to_nosql.pl - This is a Perl script which takes the SQL database scripts
 #    from Ushahidi (http://www.ushahidi.com/) and converts them into JSON
-#    dumps suitable for import into CouchDB (http://couchdb.org/).
+#    dumps suitable for import into CouchDB (http://couchdb.org/) written to
+#    separate files in the current working directory.
 
-# This script takes as its arguments one or more SQL files and outputs one
-# JSON dump which includes the converted contents of all of the SQL files.
+# by: The Doctor [412/724/301/703][ZS <drwho at virtadpt dot net>]
+# Github: https://github.com/virtadpt
 
 # Modules.
 use Getopt::Long;
@@ -29,7 +30,18 @@ my $help, $username, $host, $password, $connect_string, $database_connection;
 my $query, $table, $outfile, $json_text;
 
 # This is a list of all of the tables in the Ushahidi database.
-my @tables = ('actions', 'actions_log', 'alert', 'alert_category', 'alert_sent', 'api_banned', 'api_log', 'api_settings', 'badge', 'badge_users', 'category', 'category_lang', 'checkin', 'city', 'cluster', 'comment', 'country', 'externalapp', 'feed', 'feed_item', 'form', 'form_field', 'form_field_option', 'form_response', 'geometry', 'incident', 'incident_category', 'incident_lang', 'incident_person', 'layer', 'level', 'location', 'maintenance', 'media', 'message', 'openid', 'page', 'permissions', 'permissions_roles', 'plugin', 'private_message', 'rating', 'reporter', 'roles', 'roles_users', 'scheduler', 'scheduler_log', 'service', 'sessions', 'settings', 'user_devices', 'user_tokens', 'users', 'verified');
+my @tables = ('actions', 'actions_log', 'alert', 'alert_category',
+	      'alert_sent', 'api_banned', 'api_log', 'api_settings', 'badge',
+	      'badge_users', 'category', 'category_lang', 'checkin', 'city',
+	      'cluster', 'comment', 'country', 'externalapp', 'feed',
+	      'feed_item', 'form', 'form_field', 'form_field_option',
+	      'form_response', 'geometry', 'incident', 'incident_category',
+	      'incident_lang', 'incident_person', 'layer', 'level', 'location',
+	      'maintenance', 'media', 'message', 'openid', 'page',
+	      'permissions', 'permissions_roles', 'plugin', 'private_message',
+	      'rating', 'reporter', 'roles', 'roles_users', 'scheduler',
+	      'scheduler_log', 'service', 'sessions', 'settings',
+	      'user_devices', 'user_tokens', 'users', 'verified');
 
 # @data: Holds results from MySQL queries.
 my @data;
