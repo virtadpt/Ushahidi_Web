@@ -9,10 +9,11 @@
 
 # Modules.
 use Getopt::Long;
+use DBI;
 
 # Variables
 my $database = 'ushahidi';
-my $help, $username, $host, $password;
+my $help, $username, $host, $password, $connect_string, $database_connection;
 
 my @tables = ('actions', 'actions_log', 'alert', 'alert_category', 'alert_sent', 'api_banned', 'api_log', 'api_settings', 'badge', 'badge_users', 'category', 'category_lang', 'checkin', 'city', 'cluster', 'comment', 'country', 'externalapp', 'feed', 'feed_item', 'form', 'form_field', 'form_field_option', 'form_response', 'geometry', 'incident', 'incident_category', 'incident_lang', 'incident_person', 'layer', 'level', 'location', 'maintenance', 'media', 'message', 'openid', 'page', 'permissions', 'permissions_roles', 'plugin', 'private_message', 'rating', 'reporter', 'roles', 'roles_users', 'scheduler', 'scheduler_log', 'service', 'sessions', 'settings', 'user_devices', 'user_tokens', 'users', 'verified');
 
@@ -51,11 +52,17 @@ if (! $password) {
     }
 chomp $password;
 
-
+# Set up the database connection.
+$connect_string = "DBI:mysql:host=" . $host;
+$database_connection = DBI->connect($connect_string, $username, $password)
+    or die "ERROR: Could not connect to MySQL database.\n";
 
 foreach $table (@tables) {
     print "Table: " . $table . "\n";
     }
+
+# Clean up after ourselves.
+$database_connection->disconnect();
 
 # End of script.
 exit (0);
