@@ -1,0 +1,4 @@
+["1","login","Login privileges, granted after account confirmation","0"]
+["2","admin","Administrative user, has access to almost everything.","90"]
+["3","superadmin","Super administrative user, has access to everything.","100"]
+["4","member","Regular user with access only to the member area","10"]
